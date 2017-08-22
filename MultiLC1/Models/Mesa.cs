@@ -11,6 +11,9 @@ namespace MultiLC.Models
         [Key]
         public int IdMesa { get; set; }
 
+        
+        public int? IdMesaPadre { get; set; }
+            
         public Mesa()
         {
             this.Usuarios = new HashSet<Usuario>();
