@@ -18,7 +18,7 @@ namespace MultiLC.Controllers
         // GET: Usuarios
         public ActionResult Index()
         {
-            return View(db.Usuario.ToList());
+            return View(db.Usuarios.ToList());
         }
 
         // GET: Usuarios/Details/5
@@ -28,7 +28,7 @@ namespace MultiLC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Usuario usuario = db.Usuario.Find(id);
+            Usuario usuario = db.Usuarios.Find(id);
             if (usuario == null)
             {
                 return HttpNotFound();
@@ -51,7 +51,7 @@ namespace MultiLC.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Usuario.Add(usuario);
+                db.Usuarios.Add(usuario);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace MultiLC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Usuario usuario = db.Usuario.Find(id);
+            Usuario usuario = db.Usuarios.Find(id);
             if (usuario == null)
             {
                 return HttpNotFound();
@@ -97,7 +97,7 @@ namespace MultiLC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Usuario usuario = db.Usuario.Find(id);
+            Usuario usuario = db.Usuarios.Find(id);
             if (usuario == null)
             {
                 return HttpNotFound();
@@ -110,8 +110,8 @@ namespace MultiLC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Usuario usuario = db.Usuario.Find(id);
-            db.Usuario.Remove(usuario);
+            Usuario usuario = db.Usuarios.Find(id);
+            db.Usuarios.Remove(usuario);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

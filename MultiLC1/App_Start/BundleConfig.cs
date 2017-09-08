@@ -35,6 +35,7 @@ namespace MultiLC1
 
             bundles.Add(new StyleBundle("~/Styles/css").Include(
                 "~/Content/bootstrap.min.css",
+                "~/Content/Site.css",
                 "~/Content/toastr.css",
                 "~/Content/DataTables/css/uikit.min.css",
                 "~/Content/DataTables/css/dataTables.uikit.min.css"

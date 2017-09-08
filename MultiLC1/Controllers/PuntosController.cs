@@ -40,7 +40,7 @@ namespace MultiLC.Controllers
         // GET: Puntos/Create
         public ActionResult Create()
         {
-            ViewBag.IdUsuario = new SelectList(db.Usuario, "IdUsuario", "Nombre");
+            ViewBag.IdUsuario = new SelectList(db.Usuarios, "IdUsuario", "Nombre");
             return View();
         }
 
@@ -58,7 +58,7 @@ namespace MultiLC.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IdUsuario = new SelectList(db.Usuario, "IdUsuario", "Nombre", puntos.IdUsuario);
+            ViewBag.IdUsuario = new SelectList(db.Usuarios, "IdUsuario", "Nombre", puntos.IdUsuario);
             return View(puntos);
         }
 
@@ -74,7 +74,7 @@ namespace MultiLC.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.IdUsuario = new SelectList(db.Usuario, "IdUsuario", "Nombre", puntos.IdUsuario);
+            ViewBag.IdUsuario = new SelectList(db.Usuarios, "IdUsuario", "Nombre", puntos.IdUsuario);
             return View(puntos);
         }
 
@@ -91,7 +91,7 @@ namespace MultiLC.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.IdUsuario = new SelectList(db.Usuario, "IdUsuario", "Nombre", puntos.IdUsuario);
+            ViewBag.IdUsuario = new SelectList(db.Usuarios, "IdUsuario", "Nombre", puntos.IdUsuario);
             return View(puntos);
         }
 
