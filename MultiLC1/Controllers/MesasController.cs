@@ -19,19 +19,7 @@ namespace MultiLC.Controllers
         public ActionResult Index()
         {
 
-            Usuario empresa = new Usuario();
-            empresa.Nombre = "Lucas";
-            empresa.Apellido = "Correa";
-            empresa.Email = "lucascorrea@gmail.com";
-            empresa.Dni = "33333333";
-
-            Mesa mesa = new Mesa();
-            mesa.Usuarios.Add(empresa);
-            mesa.EstadoMesa = EstadoMesa.Activa;
-            mesa.FechaCreacion = DateTime.Now;
-
-
-            db.Mesas.Add(mesa);
+          
 
 
             return View(db.Mesas.ToList());
