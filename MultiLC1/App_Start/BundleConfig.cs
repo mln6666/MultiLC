@@ -8,7 +8,7 @@ namespace MultiLC1
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            BundleTable.EnableOptimizations = true;
+            //BundleTable.EnableOptimizations = true;
             ScriptBundle scriptBundle = new ScriptBundle("~/js");
             string[] scriptArray =
             {
@@ -34,7 +34,7 @@ namespace MultiLC1
 
 
             bundles.Add(new StyleBundle("~/Styles/css").Include(
-                "~/Content/Dashboard/css/bootstrap.min.css",
+                "~/Content/bootstrap.min.css",
                 "~/Content/toastr.css",
                 "~/Content/DataTables/css/uikit.min.css",
                 "~/Content/DataTables/css/dataTables.uikit.min.css"
