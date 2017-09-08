@@ -15,7 +15,7 @@ namespace MultiLC.Context
         }
 
         public DbSet<Mesa> Mesas { get; set; }
-        public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Venta> Ventas { get; set; }
         public DbSet<Puntos> Puntos { get; set; }
 
