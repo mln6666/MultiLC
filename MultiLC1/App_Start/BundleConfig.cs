@@ -16,7 +16,7 @@ namespace MultiLC1
                 "~/Scripts/jquery-3.1.1.min.js",
                 "~/Scripts/toastr.js",
                 "~/Scripts/DataTables/jquery.datatables.min.js",
-                "~/Scripts/DataTables/datatables.uikit.min.js",
+                "~/Scripts/DataTables/datatables.bootstrap.min.js",
                 "~/Scripts/jquery.unobtrusive-ajax.min.js"
             };
             scriptBundle.Include(scriptArray);
@@ -37,8 +37,7 @@ namespace MultiLC1
                 "~/Content/bootstrap.min.css",
                 "~/Content/Site.css",
                 "~/Content/toastr.css",
-                "~/Content/DataTables/css/uikit.min.css",
-                "~/Content/DataTables/css/dataTables.uikit.min.css"
+                "~/Content/DataTables/css/dataTables.bootstrap.min.css"
 
             ));
         }

@@ -5,7 +5,10 @@
 }
 
 <div class="row">
-    <div class="col-lg-3"><a href="@Url.Action("Create", "Usuarios")" class="btn btn-success" style="margin-top: 6%">Agregar Usuario</a></div>
+    @*<div class="col-lg-3"><a href="@Url.Action("Create", "Usuarios")" class="btn btn-success" style="margin-top: 6%">Agregar Usuario</a></div>*@
+    <div class="col-lg-3">
+        <button id="adduser" class="btn btn-success" style="margin-top: 6%">Agregar Usuario</button>
+    </div>
     <div class="col-lg-6">
         <h2 class="text-center">Lista de Usuarios</h2>
     </div>
@@ -37,7 +40,7 @@
         </tr>
     </thead>
 
-    <tbody>
+    <tbody id="insert">
         @foreach (var item in Model)
         {
             <tr>
@@ -69,8 +72,26 @@
 
 @section scripts{
     <script>
-        $(document).ready( function() {
+        $(document).ready(function() {
             $('#tabla').DataTable();
-        })
+        });
+
+        $('#adduser').click(function () {
+            $('#adduser').addClass('disabled');
+            $('#insert').prepend('<tr id="inserttd"></tr>');
+
+            $('#inserttd').append('<td><input id="username" type="text" /></td>');
+            $('#inserttd').append('<td><input id="userlastname" type="text" /></td>');
+            $('#inserttd').append('<td class="text-center"><input id="usermail" type="email" /></td>');
+            $('#inserttd').append('<td class="text-center"><input id="useridentity" type="text" /></td>');
+            $('#inserttd').append('<td class="text-center">No Activo</td>');
+            $('#inserttd').append('<td class="text-center"><button class="btn btn-success btn-sm"><span class="glyphicon glyphicon-ok"></span></button>&nbsp;<button id="addcancel" class="btn btn-danger btn-sm" onclick="addcancel()"><span class="glyphicon glyphicon-remove"></span></button></td>');
+            
+        });
+        
+        function addcancel() {
+            $('#addcancel').closest('tr').remove();
+            $('#adduser').removeClass('disabled');
+        }
     </script>
 }

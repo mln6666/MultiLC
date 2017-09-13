@@ -1,0 +1,51 @@
+﻿@model IEnumerable<MultiLC.Models.Mesa>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IdMesaPadre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EstadoMesa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaCreacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaCierre)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IdMesaPadre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstadoMesa)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaCreacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaCierre)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IdMesa }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IdMesa }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IdMesa })
+        </td>
+    </tr>
+}
+
+</table>

@@ -530,6 +530,11 @@
     <Content Include="Views\Usuarios\Create.cshtml" />
     <Content Include="Views\Usuarios\Edit.cshtml" />
     <Content Include="Views\Usuarios\Delete.cshtml" />
+    <Content Include="Views\Mesas\Index.cshtml" />
+    <Content Include="Views\Mesas\Details.cshtml" />
+    <Content Include="Views\Mesas\Create.cshtml" />
+    <Content Include="Views\Mesas\Edit.cshtml" />
+    <Content Include="Views\Mesas\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
