@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace MultiLC.Models
+namespace MultiLC1.Models
 {
     public enum EstadoMesa
     {

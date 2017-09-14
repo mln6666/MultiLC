@@ -10,9 +10,10 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MultiLC1.Models;
 
+
 namespace MultiLC1.Controllers
 {
-    [Authorize]
+
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -22,11 +23,12 @@ namespace MultiLC1.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
+
 
         public ApplicationSignInManager SignInManager
         {
@@ -34,9 +36,9 @@ namespace MultiLC1.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -57,6 +59,13 @@ namespace MultiLC1.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                ViewBag.usuariosinpermisos = "Acceso restringido. El usuario no cuenta con los permisos necesarios !";
+                //return RedirectToAction("Index","Error", new { error=2010});
+            }
+
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -73,12 +82,13 @@ namespace MultiLC1.Controllers
                 return View(model);
             }
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            // No cuenta los errores de inicio de sesión para el bloqueo de la cuenta
+            // Para permitir que los errores de contraseña desencadenen el bloqueo de la cuenta, cambie a shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
+
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -86,7 +96,7 @@ namespace MultiLC1.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Intento de inicio de sesión no válido.");
                     return View(model);
             }
         }
@@ -96,7 +106,7 @@ namespace MultiLC1.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
-            // Require that the user has already logged in via username/password or external login
+            // Requerir que el usuario haya iniciado sesión con nombre de usuario y contraseña o inicio de sesión externo
             if (!await SignInManager.HasBeenVerifiedAsync())
             {
                 return View("Error");
@@ -116,11 +126,11 @@ namespace MultiLC1.Controllers
                 return View(model);
             }
 
-            // The following code protects for brute force attacks against the two factor codes. 
-            // If a user enters incorrect codes for a specified amount of time then the user account 
-            // will be locked out for a specified amount of time. 
-            // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            // El código siguiente protege de los ataques por fuerza bruta a los códigos de dos factores. 
+            // Si un usuario introduce códigos incorrectos durante un intervalo especificado de tiempo, la cuenta del usuario 
+            // se bloqueará durante un período de tiempo especificado. 
+            // Puede configurar el bloqueo de la cuenta en IdentityConfig
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -129,14 +139,14 @@ namespace MultiLC1.Controllers
                     return View("Lockout");
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid code.");
+                    ModelState.AddModelError("", "Código no válido.");
                     return View(model);
             }
         }
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrador")]
         public ActionResult Register()
         {
             return View();
@@ -145,7 +155,7 @@ namespace MultiLC1.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
@@ -155,20 +165,20 @@ namespace MultiLC1.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+
+                    // Para obtener más información sobre cómo habilitar la confirmación de cuenta y el restablecimiento de contraseña, visite http://go.microsoft.com/fwlink/?LinkID=320771
+                    // Enviar correo electrónico con este vínculo
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    // await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", "Para confirmar la cuenta, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Users");
                 }
                 AddErrors(result);
             }
 
-            // If we got this far, something failed, redisplay form
+            // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
             return View(model);
         }
 
@@ -205,19 +215,19 @@ namespace MultiLC1.Controllers
                 var user = await UserManager.FindByNameAsync(model.Email);
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
+                    // No revelar que el usuario no existe o que no está confirmado
                     return View("ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
+                // Para obtener más información sobre cómo habilitar la confirmación de cuenta y el restablecimiento de contraseña, visite http://go.microsoft.com/fwlink/?LinkID=320771
+                // Enviar correo electrónico con este vínculo
                 // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                // await UserManager.SendEmailAsync(user.Id, "Restablecer contraseña", "Para restablecer la contraseña, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
                 // return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
-            // If we got this far, something failed, redisplay form
+            // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
             return View(model);
         }
 
@@ -251,7 +261,7 @@ namespace MultiLC1.Controllers
             var user = await UserManager.FindByNameAsync(model.Email);
             if (user == null)
             {
-                // Don't reveal that the user does not exist
+                // No revelar que el usuario no existe
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
@@ -278,7 +288,7 @@ namespace MultiLC1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
-            // Request a redirect to the external login provider
+            // Solicitar redireccionamiento al proveedor de inicio de sesión externo
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
@@ -309,7 +319,7 @@ namespace MultiLC1.Controllers
                 return View();
             }
 
-            // Generate the token and send it
+            // Generar el token y enviarlo
             if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
             {
                 return View("Error");
@@ -328,7 +338,7 @@ namespace MultiLC1.Controllers
                 return RedirectToAction("Login");
             }
 
-            // Sign in the user with this external login provider if the user already has a login
+            // Si el usuario ya tiene un inicio de sesión, iniciar sesión del usuario con este proveedor de inicio de sesión externo
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)
             {
@@ -340,7 +350,7 @@ namespace MultiLC1.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
                 case SignInStatus.Failure:
                 default:
-                    // If the user does not have an account, then prompt the user to create an account
+                    // Si el usuario no tiene ninguna cuenta, solicitar que cree una
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
@@ -361,7 +371,7 @@ namespace MultiLC1.Controllers
 
             if (ModelState.IsValid)
             {
-                // Get the information about the user from the external login provider
+                // Obtener datos del usuario del proveedor de inicio de sesión externo
                 var info = await AuthenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
@@ -423,8 +433,8 @@ namespace MultiLC1.Controllers
             base.Dispose(disposing);
         }
 
-        #region Helpers
-        // Used for XSRF protection when adding external logins
+        #region Aplicaciones auxiliares
+        // Se usa para la protección XSRF al agregar inicios de sesión externos
         private const string XsrfKey = "XsrfId";
 
         private IAuthenticationManager AuthenticationManager

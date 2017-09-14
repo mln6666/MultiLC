@@ -18,16 +18,19 @@ namespace MultiLC1.Models
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class MultiContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext()
+        public MultiContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
-
-        public static ApplicationDbContext Create()
+        public DbSet<Mesa> Mesas { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Venta> Ventas { get; set; }
+        public DbSet<Puntos> Puntos { get; set; }
+        public static MultiContext Create()
         {
-            return new ApplicationDbContext();
+            return new MultiContext();
         }
     }
 }

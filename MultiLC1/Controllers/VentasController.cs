@@ -6,10 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using MultiLC.Context;
-using MultiLC.Models;
+using MultiLC1.Models;
 
-namespace MultiLC.Controllers
+namespace MultiLC1.Controllers
 {
     public class VentasController : Controller
     {

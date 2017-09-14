@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace MultiLC.Models
+namespace MultiLC1.Models
 {
     public class Mesa
     {
@@ -26,9 +26,9 @@ namespace MultiLC.Models
 
         public EstadoMesa EstadoMesa { get; set; }
         
-        public DateTime FechaCreacion { get; set; }
+        public DateTime? FechaCreacion { get; set; }
 
-        public DateTime FechaCierre { get; set; }   
+        public DateTime? FechaCierre { get; set; }   
         
     }
 }

@@ -14,6 +14,7 @@ namespace MultiLC1
             {
                 "~/Scripts/bootstrap.js",
                 "~/Scripts/jquery-2.1.1.min.js",
+                "~/Scripts/bootbox.min.js",
                 "~/Scripts/toastr.js",
                 "~/Scripts/DataTables/jquery.datatables.min.js",
                 "~/Scripts/DataTables/datatables.bootstrap.min.js",

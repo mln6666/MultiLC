@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Services.Configuration;
 
-namespace MultiLC.Models
+namespace MultiLC1.Models
 {
     public class Puntos
     {
