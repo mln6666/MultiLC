@@ -139,7 +139,18 @@
                     }
                 });
 
-
+                document.getElementById("username").readOnly = true;
+                $('#username').css("border-color", "transparent");
+                document.getElementById("username").removeAttribute("id");
+                document.getElementById("userlastname").readOnly = true;
+                $('#userlastname').css("border-color", "transparent");
+                document.getElementById("userlastname").removeAttribute("id");
+                document.getElementById("usermail").readOnly = true;
+                $('#usermail').css("border-color", "transparent");
+                document.getElementById("usermail").removeAttribute("id");
+                document.getElementById("useridentity").readOnly = true;
+                $('#useridentity').css("border-color", "transparent");
+                document.getElementById("useridentity").removeAttribute("id");
             }
         }
     </script>
