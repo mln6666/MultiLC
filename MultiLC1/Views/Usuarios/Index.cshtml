@@ -1,4 +1,5 @@
-﻿@model IEnumerable<MultiLC.Models.Usuario>
+﻿@using MultiLC.Models
+@model IEnumerable<MultiLC.Models.Usuario>
 
 @{
     ViewBag.Title = "Index";
@@ -85,13 +86,61 @@
             $('#inserttd').append('<td class="text-center"><input id="usermail" type="email" /></td>');
             $('#inserttd').append('<td class="text-center"><input id="useridentity" type="text" /></td>');
             $('#inserttd').append('<td class="text-center">No Activo</td>');
-            $('#inserttd').append('<td class="text-center"><button class="btn btn-success btn-sm"><span class="glyphicon glyphicon-ok"></span></button>&nbsp;<button id="addcancel" class="btn btn-danger btn-sm" onclick="addcancel()"><span class="glyphicon glyphicon-remove"></span></button></td>');
+            $('#inserttd').append('<td class="text-center"><button class="btn btn-success btn-sm" onclick="adduser()"><span class="glyphicon glyphicon-ok"></span></button>&nbsp;<button id="addcancel" class="btn btn-danger btn-sm" onclick="addcancel()"><span class="glyphicon glyphicon-remove"></span></button></td>');
             
         });
         
         function addcancel() {
             $('#addcancel').closest('tr').remove();
             $('#adduser').removeClass('disabled');
+        }
+
+        function adduser() {
+            var un = true;
+            var uln = true;
+            if ($('#username').val() == "") {
+                document.getElementById("username").placeholder = "Campo Obligatorio";
+                $('#username').css("border-color", "red");
+                un = false;
+            }
+
+            if ($('#userlastname').val() == "") {
+                document.getElementById("userlastname").placeholder = "Campo Obligatorio";
+                $('#userlastname').css("border-color", "red");
+                uln = false;
+            }
+
+            if (un & uln) {
+                var user = {
+                    Nombre: $('#username').val(),
+                    Apellido: $('#userlastname').val(),
+                    Email: $('#usermail').val(),
+                    Dni: $('#useridentity').val(),
+                    EstadoUsuario: 0,
+                    UsuarioPadre: null,
+                    ListaReferidos: [],
+                    Ventas: [],
+                    Puntos: [],
+                    Mesas: []
+                }
+
+                $.ajax({
+                    url: '@Url.Action("AddUser", "Usuarios")',
+                    type: "POST",
+                    data: JSON.stringify(user),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function(d) {
+                        if (d.status) {
+                            toastr.success("Usuario guardado");
+                        } else {
+                            toastr.warning("Error");
+                        }
+                    }
+                });
+
+
+            }
         }
     </script>
 }

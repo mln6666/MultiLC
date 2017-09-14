@@ -59,6 +59,52 @@ namespace MultiLC.Controllers
             return View(usuario);
         }
 
+
+
+        //public ActionResult AddUser(string username, string userlastname, string usermail, string useridentity)
+        //{
+        //    var exist = false;
+        //    if (useridentity != "")
+        //    {
+        //        exist = db.Usuarios.ToList().Exists(u => u.Dni == useridentity);
+        //    }
+        //    if (username != null & userlastname != null & !exist)
+        //    {
+        //        Usuario usuario = new Usuario();
+        //        usuario.Nombre = username;
+        //        usuario.Apellido = userlastname;
+        //        usuario.Email = usermail;
+        //        usuario.Dni = useridentity;
+        //        usuario.EstadoUsuario = EstadoUsuario.Inactivo;
+        //        usuario.UsuarioPadre = null;
+        //        db.Usuarios.Add(usuario);
+        //        db.SaveChanges();
+        //    }
+
+        //}
+
+        [HttpPost]
+        public JsonResult AddUser(Usuario user)
+        {
+            var exist = false;
+            if (user.Dni != "")
+            {
+                exist = db.Usuarios.ToList().Exists(u => u.Dni == user.Dni);
+            }
+            if (user.Nombre != null & user.Apellido != null & !exist)
+            {
+                Usuario usuario = new Usuario();
+                usuario.Nombre = user.Nombre;
+                usuario.Apellido = user.Apellido;
+                usuario.Email = user.Email;
+                usuario.Dni = user.Dni;
+                usuario.EstadoUsuario = user.EstadoUsuario;
+                db.Usuarios.Add(usuario);
+                db.SaveChanges();
+            }
+            return new JsonResult { Data = new { status = !exist } };
+        }
+
         // GET: Usuarios/Edit/5
         public ActionResult Edit(int? id)
         {
