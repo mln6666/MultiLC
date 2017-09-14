@@ -27,24 +27,24 @@ namespace MultiLC1
                 CreateSuperuser(db);
                 AddPermisionsToSuperuser(db);
             }
-            //if (db.Usuarios == null || db.Usuarios.Count() == 0)
-            //{
-            //    if (db.Mesas==null || db.Mesas.Count()==0) { }
-            //    Usuario empresa = new Usuario();
-            //    empresa.Nombre = "EmpresaNombre";
-            //    empresa.Apellido = "EmpresaApellido";
-            //    empresa.Email = "empresa@empresa.com";
-            //    empresa.Dni = "33333333";
-            //    db.Usuarios.Add(empresa);
-            //    db.SaveChanges();
+            if (db.Usuarios == null || db.Usuarios.Count() == 0)
+            {
+                if (db.Mesas == null || db.Mesas.Count() == 0) { }
+                Usuario empresa = new Usuario();
+                empresa.Nombre = "EmpresaNombre";
+                empresa.Apellido = "EmpresaApellido";
+                empresa.Email = "empresa@empresa.com";
+                empresa.Dni = "33333333";
+                db.Usuarios.Add(empresa);
+                db.SaveChanges();
 
-            //    Mesa mesa = new Mesa();
-            //    mesa.Usuarios.Add(empresa);
-            //    mesa.EstadoMesa = EstadoMesa.Activa;
-            //    //mesa.FechaCreacion = DateTime.Now;
-            //    db.Mesas.Add(mesa);
-            //    db.SaveChanges();
-            //}
+                Mesa mesa = new Mesa();
+                mesa.Usuarios.Add(empresa);
+                mesa.EstadoMesa = EstadoMesa.Activa;
+                //mesa.FechaCreacion = DateTime.Now;
+                db.Mesas.Add(mesa);
+                db.SaveChanges();
+            }
 
         }
         private void AddPermisionsToSuperuser(MultiContext db)
