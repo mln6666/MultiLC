@@ -63,7 +63,7 @@ namespace MultiLC1.Controllers
         {
             var exist = false;
             var newid = new int();
-            if (user.Dni != "")
+            if (user.Dni != "" & user.Dni != null)
             {
                 exist = db.Usuarios.ToList().Exists(u => u.Dni == user.Dni);
             }
@@ -81,6 +81,28 @@ namespace MultiLC1.Controllers
                 newid = db.Usuarios.ToList().Last().IdUsuario;
             }
             return new JsonResult { Data = new { status = !exist, newuserid = newid } };
+        }
+
+        [HttpPost]
+        public JsonResult EditUser(Usuario user)
+        {
+            var exist = false;
+            if (user.Dni != "" & user.Dni != null)
+            {
+                exist = db.Usuarios.ToList().Exists(u => u.Dni == user.Dni & u.IdUsuario != user.IdUsuario);
+            }
+            if (user.Nombre != null & user.Apellido != null & !exist)
+            {
+                Usuario usuario = db.Usuarios.Find(user.IdUsuario);
+                usuario.Nombre = user.Nombre;
+                usuario.Apellido = user.Apellido;
+                usuario.Email = user.Email;
+                usuario.Dni = user.Dni;
+                
+                db.Entry(usuario).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return new JsonResult { Data = new { status = !exist} };
         }
 
         // GET: Usuarios/Edit/5
