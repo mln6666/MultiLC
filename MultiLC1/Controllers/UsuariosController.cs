@@ -94,15 +94,38 @@ namespace MultiLC1.Controllers
             if (user.Nombre != null & user.Apellido != null & !exist)
             {
                 Usuario usuario = db.Usuarios.Find(user.IdUsuario);
-                usuario.Nombre = user.Nombre;
-                usuario.Apellido = user.Apellido;
-                usuario.Email = user.Email;
-                usuario.Dni = user.Dni;
-                
-                db.Entry(usuario).State = EntityState.Modified;
-                db.SaveChanges();
+                if (usuario != null)
+                {
+                    usuario.Nombre = user.Nombre;
+                    usuario.Apellido = user.Apellido;
+                    usuario.Email = user.Email;
+                    usuario.Dni = user.Dni;
+
+                    db.Entry(usuario).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
             }
             return new JsonResult { Data = new { status = !exist} };
+        }
+
+        [HttpPost]
+        public JsonResult DeleteUser(int userid)
+        {
+            var ok = false;
+
+            Usuario user = db.Usuarios.Find(userid);
+
+            if (user != null)
+            {
+                if (!user.Mesas.Any())
+                {
+                    db.Usuarios.Remove(user);
+                    db.SaveChanges();
+                    ok = true;
+                }
+            }
+
+            return new JsonResult { Data = new { status = ok } };
         }
 
         // GET: Usuarios/Edit/5

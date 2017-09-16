@@ -35,11 +35,14 @@ namespace MultiLC1
                 empresa.Apellido = "EmpresaApellido";
                 empresa.Email = "empresa@empresa.com";
                 empresa.Dni = "33333333";
+                empresa.EstadoUsuario = EstadoUsuario.Activo;
                 db.Usuarios.Add(empresa);
                 db.SaveChanges();
 
+
                 Mesa mesa = new Mesa();
                 mesa.Usuarios.Add(empresa);
+
                 mesa.EstadoMesa = EstadoMesa.Activa;
                 //mesa.FechaCreacion = DateTime.Now;
                 db.Mesas.Add(mesa);
