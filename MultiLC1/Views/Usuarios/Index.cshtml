@@ -69,7 +69,7 @@
                     }
                     else
                     {
-                        <button class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteuserdenied(@item.IdUsuario)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                        <button id="@("delete" + item.IdUsuario)" class="btn btn-danger btn-sm" title="Eliminar" onclick="deleteuserdenied(@item.IdUsuario)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                     }
                 </td>
             </tr>
