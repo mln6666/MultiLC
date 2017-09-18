@@ -336,5 +336,10 @@
                 }
              });
         }
+
+        function detailsuser(userid) {
+            var url = '@Url.Action("Details", "Usuarios", new { id = "__userid__"})';
+            window.location.href = url.replace('__userid__', userid);;
+        }
     </script>
 }
