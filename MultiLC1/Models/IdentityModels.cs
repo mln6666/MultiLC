@@ -21,7 +21,7 @@ namespace MultiLC1.Models
     public class MultiContext : IdentityDbContext<ApplicationUser>
     {
         public MultiContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("MultiContext", throwIfV1Schema: false)
         {
         }
         public DbSet<Mesa> Mesas { get; set; }

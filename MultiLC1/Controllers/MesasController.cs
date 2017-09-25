@@ -17,11 +17,83 @@ namespace MultiLC1.Controllers
         // GET: Mesas
         public ActionResult Index()
         {
-
-          
-
-
+            
             return View(db.Mesas.ToList());
+        }
+
+        // AGREGAR USUARIO A MESA.
+        public ActionResult AgregarUsuario(int? idusuario)
+        {
+            if (idusuario == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Usuario usuario = db.Usuarios.Find(idusuario);
+            if (usuario == null)
+            {
+                return HttpNotFound();
+            }
+            //si esta activo se asigna a la mesa del usuario que le sugirio(padre/sugerido ver bien esto)
+            if (usuario.UsuarioPadre.EstadoUsuario == EstadoUsuario.Activo)
+                {
+                    Mesa mesa = usuario.UsuarioPadre.Mesas.LastOrDefault();
+                    //actualizo el padre
+                   usuario= ActualizarPadre(usuario, mesa);
+
+                    mesa.Usuarios.Add(usuario);
+                    db.Entry(mesa).State = EntityState.Modified;
+                    db.SaveChanges();
+                //HAY QUE TRATAR ACA QUE PASA CON LA MESA CUANDO SE LLENA
+            }
+            //si esta inactivo se va para la EMPRESA
+            else if (usuario.UsuarioPadre.EstadoUsuario == EstadoUsuario.Inactivo)
+            {
+                Mesa mesa = db.Usuarios.FirstOrDefault().Mesas.LastOrDefault();
+                //actualizo el padre
+                usuario = ActualizarPadre(usuario, mesa);
+
+                mesa.Usuarios.Add(usuario);
+                db.Entry(mesa).State = EntityState.Modified;
+                db.SaveChanges();
+                //HAY QUE TRATAR ACA QUE PASA CON LA MESA CUANDO SE LLENA
+
+            }
+
+
+            return View(mesa);
+        }
+
+
+        public Usuario ActualizarPadre(Usuario usuario, Mesa mesa)
+        {
+            int pos = mesa.Usuarios.Count() + 1;
+
+            switch (pos)
+            {
+                case 2:
+                    usuario.UsuarioPadre = mesa.Usuarios.ElementAt(0);
+                    break;
+                case 3:
+                    usuario.UsuarioPadre = mesa.Usuarios.ElementAt(0);
+                    break;
+                case 4:
+                    usuario.UsuarioPadre = mesa.Usuarios.ElementAt(1);
+                    break;
+                case 5:
+                    usuario.UsuarioPadre = mesa.Usuarios.ElementAt(1);
+                    break;
+                case 6:
+                    usuario.UsuarioPadre = mesa.Usuarios.ElementAt(2);
+                    break;
+                case 7:
+                    usuario.UsuarioPadre = mesa.Usuarios.ElementAt(2);
+                    break;
+            }
+            db.Entry(usuario).State = EntityState.Modified;
+            db.SaveChanges();
+
+
+            return usuario;
         }
 
         // GET: Mesas/Details/5
